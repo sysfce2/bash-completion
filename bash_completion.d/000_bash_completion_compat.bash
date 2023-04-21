@@ -235,6 +235,14 @@ _init_completion()
     return "$rc"
 }
 
+# @deprecated 2.12 set the `BASH_COMPLETION_*` variables directly instead.
+[[ -v COMP_FILEDIR_FALLBACK ]] &&
+    : "${BASH_COMPLETION_FILEDIR_FALLBACK=$COMP_FILEDIR_FALLBACK}"
+[[ -v COMP_KNOWN_HOSTS_WITH_AVAHI ]] &&
+    : "${BASH_COMPLETION_KNOWN_HOSTS_WITH_AVAHI=$COMP_KNOWN_HOSTS_WITH_AVAHI}"
+[[ -v COMP_KNOWN_HOSTS_WITH_HOSTFILE ]] &&
+    : "${BASH_COMPLETION_KNOWN_HOSTS_WITH_HOSTFILE=$COMP_KNOWN_HOSTS_WITH_HOSTFILE}"
+
 # @deprecated 2.12 Use the variable `_comp_backup_glob` instead.  This is the
 # backward-compatibility name.
 # shellcheck disable=SC2154  # defined in the main "bash_completion"

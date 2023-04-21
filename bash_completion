@@ -1053,14 +1053,13 @@ _comp_compgen_filedir()
         # the fallback condition with the "plus" dirs.
         local _opts=(-f -X "$_xspec")
         [[ $_xspec ]] && _plusdirs=(-o plusdirs)
-        [[ ${BASH_COMPLETION_FILEDIR_FALLBACK-${COMP_FILEDIR_FALLBACK-}} ||
-            ! ${_plusdirs-} ]] ||
+        [[ ${BASH_COMPLETION_FILEDIR_FALLBACK-} || ! ${_plusdirs-} ]] ||
             _opts+=("${_plusdirs[@]}")
 
         _comp_compgen -v toks -c "$_quoted" -- "${_opts[@]}"
 
         # Try without filter if it failed to produce anything and configured to
-        [[ ${BASH_COMPLETION_FILEDIR_FALLBACK-${COMP_FILEDIR_FALLBACK-}} &&
+        [[ ${BASH_COMPLETION_FILEDIR_FALLBACK-} &&
             $_arg && ${#toks[@]} -lt 1 ]] &&
             _comp_compgen -av toks -c "$_quoted" -- \
                 -f ${_plusdirs+"${_plusdirs[@]}"}
@@ -2502,7 +2501,7 @@ _known_hosts_real()
     fi
 
     # Add hosts reported by avahi-browse, if desired and it's available.
-    if [[ ${BASH_COMPLETION_KNOWN_HOSTS_WITH_AVAHI-${COMP_KNOWN_HOSTS_WITH_AVAHI-}} ]] &&
+    if [[ ${BASH_COMPLETION_KNOWN_HOSTS_WITH_AVAHI-} ]] &&
         type avahi-browse &>/dev/null; then
         # Some old versions of avahi-browse reportedly didn't have -k
         # (even if mentioned in the manpage); those we do not support any more.
@@ -2520,7 +2519,7 @@ _known_hosts_real()
 
     # Add results of normal hostname completion, unless
     # `BASH_COMPLETION_KNOWN_HOSTS_WITH_HOSTFILE' is set to an empty value.
-    if [[ ${BASH_COMPLETION_KNOWN_HOSTS_WITH_HOSTFILE-${COMP_KNOWN_HOSTS_WITH_HOSTFILE-1}} ]]; then
+    if [[ ${BASH_COMPLETION_KNOWN_HOSTS_WITH_HOSTFILE-set} ]]; then
         _comp_compgen -a -- -A hostname -P "$prefix" -S "$suffix"
     fi
 
@@ -2834,8 +2833,7 @@ _filedir_xspec()
     _comp_compgen -av toks -c "$quoted" -- -f -X "@(|!($xspec))"
 
     # Try without filter if it failed to produce anything and configured to
-    [[ ${BASH_COMPLETION_FILEDIR_FALLBACK-${COMP_FILEDIR_FALLBACK-}} &&
-        ${#toks[@]} -lt 1 ]] &&
+    [[ ${BASH_COMPLETION_FILEDIR_FALLBACK-} && ${#toks[@]} -lt 1 ]] &&
         _comp_compgen -av toks -c "$quoted" -- -f
 
     if ((${#toks[@]} != 0)); then

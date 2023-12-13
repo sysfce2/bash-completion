@@ -3,4 +3,4 @@
 -r requirements.txt
 
 mypy==1.2.0
-ruff==0.1.6
+ruff==0.1.8
